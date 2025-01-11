@@ -10,7 +10,11 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
 
             builder.Services.AddDistributedMemoryCache();
 
@@ -21,6 +25,7 @@ namespace StarterKit
                 options.Cookie.IsEssential = true; 
             });
 
+            builder.Services.AddScoped<TheatreShowService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
 
             builder.Services.AddDbContext<DatabaseContext>(
@@ -49,7 +54,7 @@ namespace StarterKit
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            app.Run("http://localhost:5097");
 
         }
     }
