@@ -15,9 +15,23 @@ public class TheatreShowController : Controller
     }
 
     [HttpGet("")]
-    public IActionResult GetAllTheatreShows()
+    public IActionResult GetAllTheatreShows(
+    [FromQuery] string? titleOrDescription = null,
+    [FromQuery] string? location = null,
+    [FromQuery] DateTime? startDate = null,
+    [FromQuery] DateTime? endDate = null,
+    [FromQuery] string? sortBy = null,
+    [FromQuery] bool ascending = true)
     {
-        return Ok(_service.GetAllTheatreShows());
+        var shows = _service.GetAllTheatreShows(
+            titleOrDescription,
+            location,
+            startDate,
+            endDate,
+            sortBy,
+            ascending);
+
+        return Ok(shows);
     }
 
     [HttpGet("GetById")]

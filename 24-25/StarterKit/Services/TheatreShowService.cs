@@ -12,14 +12,83 @@ public class TheatreShowService
         _context = context;
     }
 
-    public IEnumerable<TheatreShow> GetAllTheatreShows()
+    public IEnumerable<TheatreShow> GetAllTheatreShows(
+    string? titleOrDescription = null,
+    string? location = null,
+    DateTime? startDate = null,
+    DateTime? endDate = null,
+    string? sortBy = null,
+    bool ascending = true)
     {
-        return _context.TheatreShow.ToList();
+        // Get all theatre shows with related data
+        var allShows = _context.TheatreShow
+            .Include(ts => ts.Venue)
+            .Include(ts => ts.theatreShowDates)
+            .ToList();
+
+        // Filter by title or description
+        if (!string.IsNullOrEmpty(titleOrDescription))
+        {
+            allShows = allShows.Where(ts => 
+                (ts.Title != null && ts.Title.Contains(titleOrDescription)) || 
+                (ts.Description != null && ts.Description.Contains(titleOrDescription)))
+                .ToList();
+        }
+
+        // Filter by location (venue name)
+        if (!string.IsNullOrEmpty(location))
+        {
+            allShows = allShows.Where(ts => ts.Venue != null && ts.Venue.Name != null && ts.Venue.Name.Contains(location))
+                .ToList();
+        }
+
+        // Filter by start date
+        if (startDate.HasValue)
+        {
+            allShows = allShows.Where(ts => ts.theatreShowDates.Any(d => d.DateAndTime >= startDate.Value))
+                .ToList();
+        }
+
+        // Filter by end date
+        if (endDate.HasValue)
+        {
+            allShows = allShows.Where(ts => ts.theatreShowDates.Any(d => d.DateAndTime <= endDate.Value))
+                .ToList();
+        }
+
+        // Sort the results
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            if (sortBy.ToLower() == "title")
+            {
+                allShows = ascending 
+                    ? allShows.OrderBy(ts => ts.Title).ToList() 
+                    : allShows.OrderByDescending(ts => ts.Title).ToList();
+            }
+            else if (sortBy.ToLower() == "price")
+            {
+                allShows = ascending 
+                    ? allShows.OrderBy(ts => ts.Price).ToList() 
+                    : allShows.OrderByDescending(ts => ts.Price).ToList();
+            }
+            else if (sortBy.ToLower() == "date")
+            {
+                allShows = ascending
+                    ? allShows.OrderBy(ts => ts.theatreShowDates.Min(d => d.DateAndTime)).ToList()
+                    : allShows.OrderByDescending(ts => ts.theatreShowDates.Max(d => d.DateAndTime)).ToList();
+            }
+        }
+
+        return allShows;
     }
+
 
     public TheatreShow GetTheatreShowById(int id)
     {
-        return _context.TheatreShow.FirstOrDefault(i => i.TheatreShowId == id);
+        return _context.TheatreShow
+                .Include(ts => ts.Venue)
+                .Include(ts => ts.theatreShowDates)
+                .FirstOrDefault(ts => ts.TheatreShowId == id);
     }
 
     public void PostTheatreShow(TheatreShow theatreShow)
