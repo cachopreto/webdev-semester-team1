@@ -95,29 +95,25 @@ public class TheatreShowService
     public void PostTheatreShow(TheatreShow theatreShow)
     {
         //IsAdminLoggedIn()
-        if (theatreShow.Venue != null && theatreShow.Venue.VenueId > 0)
-        {
-            var existingVenue = _context.Venue.FirstOrDefault(v => v.VenueId == theatreShow.Venue.VenueId);
+        // if (theatreShow.Venue != null && theatreShow.Venue.VenueId > 0)
+        // {
+        //     var existingVenue = _context.Venue.FirstOrDefault(v => v.VenueId == theatreShow.Venue.VenueId);
 
-            if (existingVenue != null)
-            {
-                var theatreShowData = new TheatreShow
-                {
-                    Title = theatreShow.Title,
-                    Description = theatreShow.Description,
-                    Venue = existingVenue,
-                    theatreShowDates = theatreShow.theatreShowDates
-                };
-                _context.TheatreShow.Add(theatreShowData);
-                _context.SaveChanges();
-            }
-        }
-        else
-        {
-            _context.TheatreShow.Add(theatreShow);
-            _context.SaveChanges();
-        }
-
+        //     if (existingVenue != null)
+        //     {
+        //         var theatreShowData = new TheatreShow
+        //         {
+        //             Title = theatreShow.Title,
+        //             Description = theatreShow.Description,
+        //             Venue = existingVenue,
+        //             theatreShowDates = theatreShow.theatreShowDates
+        //         };
+        //         _context.TheatreShow.Add(theatreShowData);
+        //         _context.SaveChanges();
+        //     }
+        // }
+        _context.TheatreShow.Add(theatreShow);
+        _context.SaveChanges();
     }
 
     public void DeleteTheatreShow(int id)

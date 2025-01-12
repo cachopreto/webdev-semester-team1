@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getTheatreShows } from "../services/TheatreShowAPI";
+import { getTheatreShows } from "../services/TheatreShowService";
 
 interface TheatreShowDate {
   dateAndTime: string;
@@ -7,6 +7,7 @@ interface TheatreShowDate {
 
 interface Venue {
   name: string;
+  capacity: number;
 }
 
 interface TheatreShow {
@@ -18,7 +19,7 @@ interface TheatreShow {
   theatreShowDates: TheatreShowDate[];
 }
 
-const TheatreShowTable: React.FC = () => {
+const TheatreShowsOverview: React.FC = () => {
   const [shows, setShows] = useState<TheatreShow[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +52,7 @@ const TheatreShowTable: React.FC = () => {
           <th>Description</th>
           <th>Price</th>
           <th>Venue</th>
+          <th>Capacity</th>
           <th>Dates</th>
         </tr>
       </thead>
@@ -61,6 +63,7 @@ const TheatreShowTable: React.FC = () => {
             <td>{show.description}</td>
             <td>{show.price}</td>
             <td>{show.venue.name}</td>
+            <td>{show.venue.capacity}</td>
             <td>
               {show.theatreShowDates
                 .map((date) => new Date(date.dateAndTime).toLocaleString())
@@ -73,4 +76,4 @@ const TheatreShowTable: React.FC = () => {
   );
 };
 
-export default TheatreShowTable;
+export default TheatreShowsOverview;
