@@ -6,7 +6,12 @@ namespace StarterKit.Models
     public class DatabaseContext : DbContext
     {
         // The admin table will be used in both cases
-        public DbSet<Admin> Admin { get; set; }
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Admin> Admins { get; set; }
 
         // You can comment out or remove the case you are not going to use.
 
@@ -27,10 +32,12 @@ namespace StarterKit.Models
 
 
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-        {
+        // public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        // {
 
-        }
+        // }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +54,9 @@ namespace StarterKit.Models
                 .HasData(new Admin { AdminId = 4, Email = "admin4@example.com", UserName = "admin4", Password = EncryptionHelper.EncryptPassword("Welcome123") });
             modelBuilder.Entity<Admin>()
                 .HasData(new Admin { AdminId = 5, Email = "admin5@example.com", UserName = "admin5", Password = EncryptionHelper.EncryptPassword("Whatisapassword?") });
+            modelBuilder.Entity<Admin>()
+                .HasData(new Admin { AdminId = 6, Email = "admin6@example.com", UserName = "bisho", Password = EncryptionHelper.EncryptPassword("Gaara96bisho--?") });
+
         }
 
     }

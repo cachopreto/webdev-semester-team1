@@ -1,0 +1,50 @@
+# Test Admin Login
+POST http://localhost:5097/api/admin/login
+Content-Type: application/json
+
+{
+    "username": "admin1",
+    "password": "password"
+}
+
+---
+
+# Test Get Admin List
+GET http://localhost:5097/api/admin
+Authorization: Bearer {{token}}
+
+---
+
+# Test Create User
+POST http://localhost:5097/api/users
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "email": "newuser@example.com",
+    "password": "securepassword"
+}
+
+---
+
+# Test Get User by ID
+GET http://localhost:5097/api/users/1
+Authorization: Bearer {{token}}
+
+---
+
+# Test Update User
+PUT http://localhost:5097/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "username": "updateduser",
+    "email": "updateduser@example.com"
+}
+
+---
+
+# Test Delete User
+DELETE http://localhost:5097/api/users/1
+Authorization: Bearer {{token}}
