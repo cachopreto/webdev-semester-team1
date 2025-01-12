@@ -10,13 +10,22 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy => policy
+                        .AllowAnyOrigin()   // Allows any origin to make requests
+                        .AllowAnyMethod()   // Allows any HTTP method (GET, POST, etc.)
+                        .AllowAnyHeader()); // Allows any headers
+            });
+
             builder.Services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
                     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
                 });
-
 
             builder.Services.AddDistributedMemoryCache();
 
@@ -34,6 +43,9 @@ namespace StarterKit
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
             var app = builder.Build();
+
+            // Enable CORS middleware
+            app.UseCors("AllowAll");
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -56,8 +68,7 @@ namespace StarterKit
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run("http://localhost:5097");
-
+            app.Run("http://localhost:5097"); // Backend is running on port 5097
         }
     }
 }

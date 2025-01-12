@@ -1,8 +1,9 @@
 import * as React from "react";
 import { createRoot } from 'react-dom/client';
-import Home from "./pages/Home";
+import App from "./App";  // Import App component
 
-createRoot(document.getElementById('root')!)
-    .render(<React.StrictMode>
-        <Home />
-    </React.StrictMode>)
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

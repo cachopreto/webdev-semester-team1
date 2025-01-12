@@ -24,6 +24,7 @@ public class TheatreShowService
         var allShows = _context.TheatreShow
             .Include(ts => ts.Venue)
             .Include(ts => ts.theatreShowDates)
+            .Where(ts => ts.Venue != null && ts.theatreShowDates != null && ts.theatreShowDates.Any()) // Ensure valid data
             .ToList();
 
         // Filter by title or description
