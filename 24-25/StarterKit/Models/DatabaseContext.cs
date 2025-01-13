@@ -47,6 +47,52 @@ namespace StarterKit.Models
                 .HasData(new Admin { AdminId = 4, Email = "admin4@example.com", UserName = "admin4", Password = EncryptionHelper.EncryptPassword("Welcome123") });
             modelBuilder.Entity<Admin>()
                 .HasData(new Admin { AdminId = 5, Email = "admin5@example.com", UserName = "admin5", Password = EncryptionHelper.EncryptPassword("Whatisapassword?") });
+
+            // Seed theatre data
+            modelBuilder.Entity<Venue>()
+                .HasData(new Venue { VenueId = 1, Name = "Main Theatre", Capacity = 200 });
+
+            modelBuilder.Entity<TheatreShow>()
+                .HasData(
+                    new TheatreShow { 
+                        TheatreShowId = 1, 
+                        Title = "Romeo and Juliet", 
+                        Description = "Shakespeare's classic tale of star-crossed lovers",
+                        Price = 25.00,
+                        VenueId = 1
+                    },
+                    new TheatreShow { 
+                        TheatreShowId = 2, 
+                        Title = "The Phantom of the Opera", 
+                        Description = "Andrew Lloyd Webber's musical masterpiece",
+                        Price = 35.00,
+                        VenueId = 1
+                    }
+                );
+
+            modelBuilder.Entity<TheatreShowDate>()
+                .HasData(
+                    new TheatreShowDate { 
+                        TheatreShowDateId = 1, 
+                        DateAndTime = DateTime.Now.AddDays(7).Date.AddHours(19), 
+                        TheatreShowId = 1 
+                    },
+                    new TheatreShowDate { 
+                        TheatreShowDateId = 2, 
+                        DateAndTime = DateTime.Now.AddDays(8).Date.AddHours(19), 
+                        TheatreShowId = 1 
+                    },
+                    new TheatreShowDate { 
+                        TheatreShowDateId = 3, 
+                        DateAndTime = DateTime.Now.AddDays(7).Date.AddHours(20), 
+                        TheatreShowId = 2 
+                    },
+                    new TheatreShowDate { 
+                        TheatreShowDateId = 4, 
+                        DateAndTime = DateTime.Now.AddDays(9).Date.AddHours(20), 
+                        TheatreShowId = 2 
+                    }
+                );
         }
 
     }

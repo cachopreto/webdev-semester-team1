@@ -10,6 +10,7 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             // Add CORS policy
             builder.Services.AddCors(options =>
             {
@@ -38,9 +39,10 @@ namespace StarterKit
 
             builder.Services.AddScoped<TheatreShowService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>(); // Register your reservation service
 
-            builder.Services.AddDbContext<DatabaseContext>(
-                options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
             var app = builder.Build();
 
@@ -51,7 +53,6 @@ namespace StarterKit
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -61,14 +62,18 @@ namespace StarterKit
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.UseSession();
 
+            // Map default controller route
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run("http://localhost:5097"); // Backend is running on port 5097
+            // Map attribute-routed controllers
+            app.MapControllers(); // This will ensure your API controllers are accessible
+
+            app.Run();
+
         }
     }
 }
