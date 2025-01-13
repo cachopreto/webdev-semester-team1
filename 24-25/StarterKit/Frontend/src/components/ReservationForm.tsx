@@ -87,7 +87,7 @@ export const ReservationForm: React.FC<ReservationFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="reservation-form">
-      <h3>Reserve Tickets for {showTitle}</h3>
+      <h3>Theatre Show: {showTitle}</h3>
       <p>Show Date: {showDate}</p>
       <p>Price per ticket: €{price}</p>
       <p>Available tickets: {availableTickets}</p>

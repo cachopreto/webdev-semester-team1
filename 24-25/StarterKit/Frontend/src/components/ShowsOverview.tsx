@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fetchShows, fetchVenues } from '../services/showService';
+import { fetchShows, fetchVenues } from '../services/TheatreShowService';
+
+// Define types for shows and venues
+interface Show {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  price: number;
+}
+
+interface Venue {
+  id: number;
+  name: string;
+}
 
 const ShowsOverview = () => {
-  const [shows, setShows] = useState([]);
-  const [venues, setVenues] = useState([]);
+  const [shows, setShows] = useState<Show[]>([]); // Explicitly type as Show[]
+  const [venues, setVenues] = useState<Venue[]>([]); // Explicitly type as Venue[]
   const [filters, setFilters] = useState({
     search: '',
     venue: '',
@@ -16,12 +30,12 @@ const ShowsOverview = () => {
 
   useEffect(() => {
     const loadVenues = async () => {
-      const venuesData = await fetchVenues();
+      const venuesData: Venue[] = await fetchVenues(); // Add type assertion
       setVenues(venuesData);
     };
 
     const loadShows = async () => {
-      const showsData = await fetchShows(filters);
+      const showsData: Show[] = await fetchShows(filters); // Add type assertion
       setShows(showsData);
     };
 
@@ -34,7 +48,7 @@ const ShowsOverview = () => {
     setFilters((prev) => ({ ...prev, ...params }));
   }, [searchParams]);
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
     setSearchParams((prev) => ({ ...Object.fromEntries([...prev]), [name]: value }));
@@ -43,39 +57,68 @@ const ShowsOverview = () => {
   return (
     <div>
       <div>
-        <input
-          type="text"
-          name="search"
-          value={filters.search}
-          onChange={handleFilterChange}
-          placeholder="Search by title or description"
-        />
+        <div>
+          <label htmlFor="search">Search by title or description</label>
+          <input
+            type="text"
+            id="search"
+            name="search"
+            value={filters.search}
+            onChange={handleFilterChange}
+            placeholder="Search..."
+          />
+        </div>
 
-        <select name="venue" value={filters.venue} onChange={handleFilterChange}>
-          <option value="">All Venues</option>
-          {venues.map((venue) => (
-            <option key={venue.id} value={venue.name}>
-              {venue.name}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label htmlFor="venue">Select a Venue</label>
+          <select
+            id="venue"
+            name="venue"
+            value={filters.venue}
+            onChange={handleFilterChange}
+            aria-label="Select a venue"
+          >
+            <option value="">All Venues</option>
+            {venues.map((venue) => (
+              <option key={venue.id} value={venue.name}>
+                {venue.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <input
-          type="month"
-          name="month"
-          value={filters.month}
-          onChange={handleFilterChange}
-        />
+        <div>
+          <label htmlFor="month">Select a Month</label>
+          <input
+            type="text"
+            id="month"
+            name="month"
+            value={filters.month}
+            onChange={handleFilterChange}
+            placeholder="YYYY-MM"
+            pattern="\d{4}-\d{2}"
+            title="Enter month in YYYY-MM format"
+          />
+        </div>
 
-        <select name="orderBy" value={filters.orderBy} onChange={handleFilterChange}>
-          <option value="">Default Order</option>
-          <option value="title-asc">Title A-Z</option>
-          <option value="title-desc">Title Z-A</option>
-          <option value="price-asc">Price Low to High</option>
-          <option value="price-desc">Price High to Low</option>
-          <option value="date-asc">Date Ascending</option>
-          <option value="date-desc">Date Descending</option>
-        </select>
+        <div>
+          <label htmlFor="orderBy">Order By</label>
+          <select
+            id="orderBy"
+            name="orderBy"
+            value={filters.orderBy}
+            onChange={handleFilterChange}
+            aria-label="Order by options"
+          >
+            <option value="">Default Order</option>
+            <option value="title-asc">Title A-Z</option>
+            <option value="title-desc">Title Z-A</option>
+            <option value="price-asc">Price Low to High</option>
+            <option value="price-desc">Price High to Low</option>
+            <option value="date-asc">Date Ascending</option>
+            <option value="date-desc">Date Descending</option>
+          </select>
+        </div>
       </div>
 
       <ul>
@@ -93,4 +136,3 @@ const ShowsOverview = () => {
 };
 
 export default ShowsOverview;
-

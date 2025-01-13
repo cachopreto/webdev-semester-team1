@@ -63,7 +63,7 @@ public class TheatreShowController : Controller
     }
 
     [HttpPut("UpdateTheatreShow")]
-    public IActionResult UpdateTheatreShow([FromQuery] int id, [FromBody] TheatreShow updatedTheatreShow)
+    public IActionResult UpdateTheatreShow([FromQuery] int id, [FromBody] UpdateTheatreShow updatedTheatreShow)
     {
         var theatreShow = _service.GetTheatreShowById(id);
         if (theatreShow == null) return NotFound();

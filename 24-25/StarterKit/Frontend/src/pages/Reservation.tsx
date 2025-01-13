@@ -2,45 +2,75 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReservationForm } from '../components/ReservationForm';
 import { ShoppingCart } from '../components/ShoppingCart';
+import { getTheatreShows } from '../services/TheatreShowService';
 import '../styles/reservation.css';
 
-interface ShowData {
-  theatreShowDateId: number;
-  showId: number;
-  title: string;
-  dateAndTime: string;
-  price: number;
-  venue: {
-    capacity: number;
+interface Venue {
+  venueId: number;
+  name: string;
+  capacity: number;
+}
+
+interface Reservation {
+  reservationId: number;
+  amountOfTickets: number;
+  used: boolean;
+  customer?: {
+    customerId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
   };
+  theatreShowDateId: number;
+}
+
+interface ShowData {
+  theatreShowId: number;
+  title: string;
+  description: string;
+  price: number;
+  venueId: number;
+  venue?: Venue;
+  theatreShowDates: {
+    theatreShowDateId: number;
+    dateAndTime: string;
+    reservations: Reservation[];
+  }[];
 }
 
 export const ReservationPage: React.FC = () => {
   const { showDateId } = useParams<{ showDateId: string }>();
-  const [showData, setShowData] = useState<ShowData | null>(null);
-  const [availableTickets, setAvailableTickets] = useState<number>(0);
+  const [showsData, setShowsData] = useState<ShowData[]>([]);  // Now storing an array of shows
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchShowData = async () => {
+    const fetchShowsData = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        // Fetch show date details
-        const showDateResponse = await fetch(`/api/v1/reservations/showdate/${showDateId}`);
-        if (!showDateResponse.ok) {
-          throw new Error('Failed to fetch show data');
-        }
-        const showDateData = await showDateResponse.json();
+        const shows = await getTheatreShows();  // Fetch all shows
 
-        // Fetch reserved tickets count
-        const reservedResponse = await fetch(`/api/v1/reservations/count/${showDateId}`);
-        if (!reservedResponse.ok) {
-          throw new Error('Failed to fetch reserved tickets count');
+        if (!shows || shows.length === 0) {
+          throw new Error('No theatre shows found');
         }
-        const { reservedTickets } = await reservedResponse.json();
 
-        setShowData(showDateData);
-        setAvailableTickets(showDateData.venue.capacity - reservedTickets);
+        // If there's a showDateId, filter based on that
+        if (showDateId) {
+          const show = shows.find(
+            (show: ShowData) =>
+              show.theatreShowDates.some(
+                (date) => date.theatreShowDateId.toString() === showDateId
+              )
+          );
+          if (!show) {
+            throw new Error('Show not found');
+          }
+          setShowsData([show]);  // Set only the found show
+        } else {
+          setShowsData(shows);  // If no showDateId, set all shows
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -48,39 +78,64 @@ export const ReservationPage: React.FC = () => {
       }
     };
 
-    if (showDateId) {
-      fetchShowData();
-    }
+    fetchShowsData();
   }, [showDateId]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error || !showData) {
-    return <div>Error: {error || 'Show not found'}</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!showsData.length) {
+    return <div>No shows available</div>;
   }
 
   return (
     <div className="reservation-page">
-      <h1>{showData.title}</h1>
-      
-      <div className="reservation-layout">
-        <div className="reservation-form-container">
-          <ReservationForm
-            showId={showData.showId}
-            showTitle={showData.title}
-            showDate={new Date(showData.dateAndTime).toLocaleString()}
-            showDateId={showData.theatreShowDateId}
-            price={showData.price}
-            availableTickets={availableTickets}
-          />
-        </div>
+      {showsData.map((showData) => (
+        <div key={showData.theatreShowId} className="show-details">
+          <hr style={{ border: '1px solid #ccc', marginBottom: '10px' }} />
+          <h1>{showData.title}</h1>
+          {/* <p>{showData.description}</p>
+          <p>Pricee: ${showData.price}</p>
+          <p>Venue: {showData.venue?.name || 'No venue information available'}</p>
+          <p>Date and Time: {new Date(showData.theatreShowDates[0]?.dateAndTime).toLocaleString()}</p> */}
 
-        <div className="cart-section">
-          <ShoppingCart />
+          {/* Available Tickets */}
+          <p>
+            {showData.theatreShowDates[0]?.reservations?.reduce(
+              (acc, reservation) => acc + reservation.amountOfTickets,
+              0
+            )}
+          </p>
+
+          <div className="reservation-layout">
+            <div className="reservation-form-container">
+              <ReservationForm
+                showId={showData.theatreShowId}
+                showTitle={showData.title}
+                showDate={new Date(showData.theatreShowDates[0]?.dateAndTime).toLocaleString()}
+                showDateId={showData.theatreShowDates[0]?.theatreShowDateId}
+                price={showData.price}
+                availableTickets={
+                  showData.venue?.capacity ?? 0 -
+                  showData.theatreShowDates[0]?.reservations?.reduce(
+                    (acc, reservation) => acc + reservation.amountOfTickets,
+                    0
+                  )
+                }
+              />
+            </div>
+
+            <div className="cart-section">
+              <ShoppingCart />
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

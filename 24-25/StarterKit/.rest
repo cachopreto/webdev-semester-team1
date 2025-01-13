@@ -1,12 +1,12 @@
-//post venue
-POST http://localhost:5097/api/v1/theatreShow/PostVenue HTTP/1.1
-Content-Type: application/json
+# //post venue
+# POST http://localhost:5097/api/v1/theatreShow/PostVenue HTTP/1.1
+# Content-Type: application/json
 
-{
-    "name": "Theatre 1",
-    "capacity": 100
-}
-#####
+# {
+#     "name": "Theatre 1",
+#     "capacity": 100
+# }
+# #####
 
 //post theatre show
 POST http://localhost:5097/api/v1/theatreShow/PostTheatreShow HTTP/1.1
@@ -14,7 +14,7 @@ Content-Type: application/json
 
 {
     //"theatreShowId": ,
-    "title": "test create show",
+    "title": "test create show jay",
     "description": "test create",
     "price": 1,
     "venue": 
@@ -39,63 +39,48 @@ GET http://localhost:5097/api/v1/theatreShow HTTP/1.1
 #####
 
 //Delete theatre show
-DELETE http://localhost:5097/api/v1/theatreShow/DeleteById?id=5 HTTP/1.1
+DELETE http://localhost:5097/api/v1/theatreShow/DeleteById?id=1 HTTP/1.1
 #####
 
-//Delete venue
-DELETE http://localhost:5097/api/v1/theatreShow/DeleteVenue?id=1 HTTP/1.1
-#####
+# //Delete venue
+# DELETE http://localhost:5097/api/v1/theatreShow/DeleteVenue?id=1 HTTP/1.1
+# #####
 
-//Delete theatre show date
-DELETE http://localhost:5097/api/v1/theatreShow/DeleteDate?id=8 HTTP/1.1
-#####
+# //Delete theatre show date
+# DELETE http://localhost:5097/api/v1/theatreShow/DeleteDate?id=8 HTTP/1.1
+# #####
 
 //Get one theatre show by id
-GET http://localhost:5097/api/v1/theatreShow/GetById?id=4 HTTP/1/1
+GET http://localhost:5097/api/v1/theatreShow/GetById?id=1 HTTP/1/1
 #####
 
 //put theatre show
-PUT http://localhost:5097/api/v1/theatreShow/UpdateTheatreShow?id=10 HTTP/1.1
+PUT http://localhost:5097/api/v1/theatreShow/UpdateTheatreShow?id=1 HTTP/1.1
 Content-Type: application/json
 
 {
-    //"theatreShowId": ,
-    "title": "test update show",
-    "description": "test update",
-    "price": ,
-    "venue": 
-    {
-        //"venueId": 1,
-        "name": "update venue",
-        "capacity": 55
-    },
-    "theatreShowDates": [
-        {
-            "dateAndTime": "2024-04-10T19:00:00"
-        },
-        {
-            "dateAndTime": "2024-04-09T19:00:00"
-        }
-    ]
+    "title": "hoihoihoi",
+    "description": "test update hoi",
+    "price": 10
 }
 #####
 
-//post theatre show date
-POST http://localhost:5097/api/v1/theatreShow/PostTheatreShowdate HTTP/1.1
-Content-Type: application/json
+# //post theatre show date
+# POST http://localhost:5097/api/v1/theatreShow/PostTheatreShowdate HTTP/1.1
+# Content-Type: application/json
 
-{
-    "dates": [
-        "2024-10-30T19:00:00",
-        "2024-10-31T19:00:00"
-    ]
-}
-#####
+# {
+#     "dates": [
+#         "2024-10-30T19:00:00",
+#         "2024-10-31T19:00:00"
+#     ]
+# }
+# #####
 
 // get all with the filters:
 
 // title or description
-GET http://localhost:5097/api/v1/theatreShow?titleOrDescription=testupdate
+GET http://localhost:5097/api/v1/theatreShow?titleOrDescription=test
 #####
 
 // location (venue name)

@@ -3,7 +3,7 @@ using StarterKit.Models;
 
 namespace StarterKit.Services;
 
-public class TheatreShowService
+public class TheatreShowService : ITheatreShowService
 {
     private readonly DatabaseContext _context;
 
@@ -127,18 +127,15 @@ public class TheatreShowService
         }
     }
 
-    public void UpdateTheatreShow(int id, TheatreShow updatedTheatreShow)
+    public void UpdateTheatreShow(int id, UpdateTheatreShow updatedTheatreShow)
     {
         //IsAdminLoggedIn()
         var theatreShow = _context.TheatreShow.FirstOrDefault(i => i.TheatreShowId == id);
         if (theatreShow != null)
         {
-            //TheatreShowId = theatreShow.TheatreShowId,
             theatreShow.Title = updatedTheatreShow.Title;
             theatreShow.Description = updatedTheatreShow.Description;
-            //Price = theatreShow.Price,
-            theatreShow.Venue = updatedTheatreShow.Venue;
-            theatreShow.theatreShowDates = updatedTheatreShow.theatreShowDates;
+            theatreShow.Price = updatedTheatreShow.Price;
 
             _context.TheatreShow.Update(theatreShow);
             _context.SaveChanges();

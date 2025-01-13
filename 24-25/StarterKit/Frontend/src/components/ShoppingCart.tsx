@@ -1,9 +1,6 @@
-/**
- * Shopping Cart Component
- * Displays cart items and handles checkout process
- */
 import React, { useState } from 'react';
 import { useShoppingCartContext } from '../contexts/ShoppingCartContext';
+import { createReservation } from '../services/TheatreShowService';  // Import the service
 import '../styles/reservation.css';
 
 export const ShoppingCart: React.FC = () => {
@@ -20,28 +17,18 @@ export const ShoppingCart: React.FC = () => {
     setError(null);
 
     try {
-      // Send reservation requests in parallel
+      // Send reservation requests for each cart item using the reservation service
       const results = await Promise.all(
-        cart.items.map(item => 
-          fetch('/api/v1/reservations', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              firstName: item.firstName,
-              lastName: item.lastName,
-              email: item.email,
-              theatreShowDateId: item.theatreShowDateId,
-              amountOfTickets: item.amountOfTickets
-            })
-          }).then(res => {
-            if (!res.ok) {
-              return res.text().then(text => {
-                throw new Error(`Failed to reserve ${item.showTitle}: ${text}`);
-              });
-            }
-            return res.json();
+        cart.items.map(item =>
+          createReservation({
+            firstName: item.firstName,
+            lastName: item.lastName,
+            email: item.email,
+            theatreShowDateId: item.theatreShowDateId,
+            amountOfTickets: item.amountOfTickets,
+          }).catch(err => {
+            // Handle individual reservation failures
+            throw new Error(`Failed to reserve ${item.showTitle}: ${err.message}`);
           })
         )
       );
@@ -63,7 +50,7 @@ export const ShoppingCart: React.FC = () => {
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
-      
+
       {error && (
         <div style={{ color: '#dc3545', marginBottom: '1rem' }}>
           {error}
@@ -80,7 +67,7 @@ export const ShoppingCart: React.FC = () => {
               Price: €{(item.price || 0) * item.amountOfTickets}
             </div>
           </div>
-          <button 
+          <button
             className="remove-button"
             onClick={() => removeFromCart(item.id)}
             disabled={isLoading}

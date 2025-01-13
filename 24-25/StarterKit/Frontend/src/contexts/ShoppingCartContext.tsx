@@ -1,6 +1,5 @@
-/**
- * Context for managing shopping cart state across the application
- */
+// contexts/ShoppingCartContext.tsx
+
 import React, { createContext, useContext } from 'react';
 import { useShoppingCart } from '../hooks/useShoppingCart';
 import { CartItem, ShoppingCart } from '../types/reservation';

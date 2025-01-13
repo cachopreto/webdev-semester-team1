@@ -48,6 +48,7 @@ const TheatreShowsOverview: React.FC = () => {
     <table border={1}>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Title</th>
           <th>Description</th>
           <th>Price</th>
@@ -59,6 +60,7 @@ const TheatreShowsOverview: React.FC = () => {
       <tbody>
         {shows.map((show) => (
           <tr key={show.theatreShowId}>
+            <td>{show.theatreShowId}</td>
             <td>{show.title}</td>
             <td>{show.description}</td>
             <td>{show.price}</td>

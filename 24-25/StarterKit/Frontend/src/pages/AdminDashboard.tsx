@@ -9,10 +9,16 @@ const AdminDashboard: React.FC = () => {
       <p>Select an option below to manage the system:</p>
       <ul>
         <li>
-          <Link to="/TheatreShowOverviewPage">View Theatre Shows</Link>
+          <Link to="/TheatreShowOverviewPage">View Theatre Shows and edit or delete</Link>
         </li>
         <li>
           <Link to="/CreateTheatreShowPage">Create New Theatre Show</Link>
+        </li>
+        <li>
+          <Link to="/ShowOverviewPage">zamir code</Link>
+        </li>
+        <li>
+          <Link to="/Reservation">ammar code</Link>
         </li>
       </ul>
     </div>

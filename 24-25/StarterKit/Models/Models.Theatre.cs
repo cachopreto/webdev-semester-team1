@@ -68,4 +68,11 @@ namespace StarterKit.Models
 
         public List<TheatreShow>? TheatreShows { get; set; }
     }
+
+    public class UpdateTheatreShow
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public double Price { get; set; }
+    }
 }
