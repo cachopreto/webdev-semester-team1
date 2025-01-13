@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StarterKit.Models;
 using StarterKit.Services;
+using StarterKit.Utils;
 
 namespace StarterKit
 {
@@ -15,7 +16,7 @@ namespace StarterKit
             {
                 options.AddPolicy("AllowReactApp",
                     builder => builder
-                        .WithOrigins("http://localhost:5097")
+                        .WithOrigins("http://localhost:3000")
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
@@ -32,6 +33,7 @@ namespace StarterKit
             // Add HttpContextAccessor and Services
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<LoginService>();
 
             // Configure session
             builder.Services.AddDistributedMemoryCache();
@@ -68,6 +70,51 @@ namespace StarterKit
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//testing 
+            // using (var scope = app.Services.CreateScope())
+            // {
+            //     var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+            //     var existingAdmin = dbContext.Admins.FirstOrDefault(a => a.UserName == "www");
+
+            //     if (existingAdmin == null)
+            //     {
+            //         var newAdmin = new Admin
+            //         {
+            //             UserName = "www",
+            //             Password = EncryptionHelper.EncryptPassword("www")
+            //         };
+
+            //         dbContext.Admins.Add(newAdmin);
+            //         dbContext.SaveChanges();
+
+            //         Console.WriteLine("✅ Extra admin user created!");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("⚠️ Extra admin already exists, skipping insert.");
+            //     }
+            // }
+
+            // using (var scope = app.Services.CreateScope())
+            // {
+            //     var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            //     var admins = dbContext.Admins.ToList();
+
+            //     if (admins.Any())
+            //     {
+            //         Console.WriteLine("Admins in Database:");
+            //         foreach (var admin in admins)
+            //         {
+            //             Console.WriteLine($"ID: {admin.AdminId}, Username: {admin.UserName}");
+            //         }
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("No admins found in the database.");
+            //     }
+            // }
 
             app.Run();
         }

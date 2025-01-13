@@ -24,8 +24,7 @@ public class LoginService : ILoginService
         if (admin == null) 
             return "Admin not found";
 
-        var encryptedPassword = EncryptionHelper.EncryptPassword(password);
-        if (admin.Password != encryptedPassword)
+        if (!EncryptionHelper.VerifyPassword(password, admin.Password))
             return "Incorrect password";
 
         var httpContext = _httpContextAccessor.HttpContext 
