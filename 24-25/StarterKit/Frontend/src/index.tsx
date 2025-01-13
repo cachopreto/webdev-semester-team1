@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createRoot } from 'react-dom/client';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import { ReservationPage } from "./pages/Reservation";
@@ -17,4 +18,5 @@ createRoot(document.getElementById('root')!)
                 </BrowserRouter>
             </ShoppingCartProvider>
         </React.StrictMode>
-    )
+    );
+

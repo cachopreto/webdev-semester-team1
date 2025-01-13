@@ -131,6 +131,9 @@ dist
 .pnp.*
 
 
+/Contents/Code/HelloWorld/bin/
+Project Ideas/
+# StarterKit/
 
 
 .fake
