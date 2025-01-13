@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import "../styles/login.css"; // Use the same styling theme
+import "../styles/login.css"; 
 
 const Home = () => {
   return (
     <div className="home-container">
       <header>
-        <h1>🎬 Welcome to MovieHub</h1>
+        <h1>🎬 Welcome to Zoro</h1>
         <p>Your gateway to an exclusive cinema experience.</p>
       </header>
 

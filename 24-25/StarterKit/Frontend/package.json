@@ -4,10 +4,11 @@
   "description": "This is a basic react toolchain for a React app with Typescript",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --mode development --open",
+    "start": "webpack serve --mode development --config webpack.config.js --port 3000 --open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack -w --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development --hot"
   },
   "repository": {
     "type": "git",
@@ -25,27 +26,21 @@
   },
   "homepage": "https://github.com/Steven24K/Hello-React-Typescript#readme",
   "devDependencies": {
-    "clean-webpack-plugin": "^1.0.1",
-    "css-loader": "^2.1.0",
-    "file-loader": "^3.0.1",
-    "html-webpack-plugin": "^5.6.3",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^6.2.2",
-    "typescript": "^5.4.5",
-    "url-loader": "^1.1.2",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.2.0"
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
-    "@types/react-router-dom": "^5.3.3",
-    "axios": "^1.7.9",
-    "bootstrap": "^5.3.3",
-    "path": "^0.12.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^7.1.1"
+    "axios": "^0.27.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^6.3.0"
   }
 }

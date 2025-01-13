@@ -1,6 +1,6 @@
 namespace StarterKit.Models
 {
-    public class UserC
+    public class User
     {
         public int UserId { get; set; }
 

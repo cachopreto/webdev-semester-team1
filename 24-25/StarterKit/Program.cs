@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StarterKit.Models;
 using StarterKit.Services;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace StarterKit
 {
@@ -14,52 +10,38 @@ namespace StarterKit
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configure CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder => builder
+                        .WithOrigins("http://localhost:5097")
+                        .AllowCredentials()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
             // Configure services
             builder.Services.AddControllers();
-
             builder.Services.AddControllersWithViews();
 
             // Configure Entity Framework Core with SQLite
             builder.Services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
-            // Add HttpContextAccessor
+            // Add HttpContextAccessor and Services
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<LoginService>();
+            builder.Services.AddScoped<ILoginService, LoginService>();
 
-            // Configure distributed memory cache
+            // Configure session
             builder.Services.AddDistributedMemoryCache();
-
-            // Configure session settings
             builder.Services.AddSession(options => 
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30); // Increased timeout
-                options.Cookie.HttpOnly = true; 
-                options.Cookie.IsEssential = true; 
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.Lax;
             });
-
-            // Configure JWT authentication
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "YourIssuer",
-                    ValidAudience = "YourAudience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKey"))
-                };
-            });
-
-            // Add application services
-            builder.Services.AddScoped<ILoginService, LoginService>();
 
             var app = builder.Build();
 
@@ -73,21 +55,20 @@ namespace StarterKit
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            // Use CORS before routing
+            app.UseCors("AllowReactApp");
 
-            // Enable authentication and authorization middleware
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
             // Enable session middleware
             app.UseSession();
 
-            // Configure the default route
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            // Run the application
             app.Run();
         }
     }

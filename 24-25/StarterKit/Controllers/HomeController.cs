@@ -6,10 +6,10 @@ namespace StarterKit.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<HomeController> _logger;
 
 
-    public HomeController(ILogger<UserController> logger)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
     }

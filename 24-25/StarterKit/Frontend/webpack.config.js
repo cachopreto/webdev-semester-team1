@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -24,10 +25,20 @@ module.exports = {
     ],
   },
   devServer: {
-    static: path.join(__dirname, 'public'),
-    port: 8080,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    port: 3000,
+    hot: true,
     open: true,
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5097',
+        secure: false,
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
