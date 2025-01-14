@@ -15,24 +15,24 @@ public class LoginService : ILoginService
         _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
     }
 
-    public async Task<string> LoginAsync(string username, string password)
+    public async Task<bool> LoginAsync(string username, string password)
     {
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            return "Username and password are required";
+            return false;
 
-        var admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.UserName == username);
+        var admin = await _dbContext.Admin.FirstOrDefaultAsync(a => a.UserName == username);
         if (admin == null) 
-            return "Admin not found";
+            return false;
 
         if (!EncryptionHelper.VerifyPassword(password, admin.Password))
-            return "Incorrect password";
+            return false;
 
         var httpContext = _httpContextAccessor.HttpContext 
             ?? throw new InvalidOperationException("HttpContext is not available");
 
         // Register session
         httpContext.Session.SetString(SESSION_KEY, admin.UserName);
-        return "Login successful";
+        return true;
     }
 
     public bool IsLoggedIn(out string username)

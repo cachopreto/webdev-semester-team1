@@ -14,7 +14,7 @@ namespace StarterKit.Models
         {
 
         }
-        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Admin> Admin { get; set; }
 
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
