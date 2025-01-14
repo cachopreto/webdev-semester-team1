@@ -10,11 +10,13 @@ namespace StarterKit.Controllers;
 [Route("api/[controller]")]
 public class AdminController : ControllerBase
 {
-    private readonly LoginService _loginService;
+    private readonly ILoginService _loginService;
+    private readonly ILogger<AdminController> _logger;
 
-    public AdminController(LoginService loginService)
+    public AdminController(ILoginService loginService, ILogger<AdminController> logger)
     {
         _loginService = loginService;
+        _logger = logger;
     }
 
     [HttpPost("login")]
@@ -32,9 +34,8 @@ public class AdminController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Log exception (optional)
-            Debug.WriteLine(ex.Message);
-            return StatusCode(500, new { error = "An unexpected error occurred. Please try again later." });
+            _logger.LogError(ex, "Login error occurred: {Message}, Stack trace: {StackTrace}", ex.Message, ex.StackTrace);
+            return StatusCode(500, new { error = $"Login error: {ex.Message}" });
         }
     }
     

@@ -15,13 +15,12 @@ namespace StarterKit
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
-                    // policy => policy
                     policy => policy
                         .WithOrigins("http://localhost:8080")
-                        // .AllowAnyOrigin()   // Allows any origin to make requests
-                        .AllowAnyMethod()   // Allows any HTTP method (GET, POST, etc.)
-                        .AllowAnyHeader() // Allows any headers
-                        .AllowCredentials());
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed(_ => true));
             });
 
             builder.Services.AddControllers();
@@ -35,23 +34,29 @@ namespace StarterKit
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options => 
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true; 
                 options.Cookie.IsEssential = true; 
                 options.Cookie.SameSite = SameSiteMode.Lax;
-
             });
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<TheatreShowService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
-            builder.Services.AddScoped<LoginService>();
             builder.Services.AddScoped<IReservationService, ReservationService>(); // Register your reservation service
 
             builder.Services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
             var app = builder.Build();
+
+            // Create and seed the database
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<DatabaseContext>();
+                context.Database.EnsureCreated();
+            }
 
             // Enable CORS middleware
             app.UseCors("AllowAll");
