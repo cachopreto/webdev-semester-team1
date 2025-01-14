@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-
+using BCrypt.Net;
 
 namespace StarterKit.Utils
 {
@@ -8,8 +8,12 @@ namespace StarterKit.Utils
     {
         public static string EncryptPassword(string password)
         {
-            SHA256 mySha565 = SHA256.Create();
-            return Encoding.Default.GetString(mySha565.ComputeHash(Encoding.ASCII.GetBytes(password)));
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public static bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 }

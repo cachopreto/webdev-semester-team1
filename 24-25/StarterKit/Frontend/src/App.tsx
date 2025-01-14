@@ -9,13 +9,16 @@ import ShowOverview from "./pages/ShowsOverviewPage";
 import Reservation from "./pages/Reservation";
 import FutureShowsPage from "./pages/FutureShowsPage";
 import ReservationOverviewPage from "./pages/ReservationOverviewPage";
+import Home from "./pages/Home";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 
 const App: React.FC = () => {
   return (
     <ShoppingCartProvider> {/* Wrap the Routes with the ShoppingCartProvider */}
       <Router>
         <Routes>
-          <Route path="/" element={<AdminDashboard />} />
+          <Route path="/" element={<Home />} />
           <Route path="/TheatreShowOverviewPage" element={<TheatreShowOverviewPage />} />
           <Route path="/CreateTheatreShowPage" element={<CreateTheatreShowPage />} />
           <Route path="/EditTheatreShowPage/:id" element={<EditTheatreShowPage />} />
@@ -23,6 +26,9 @@ const App: React.FC = () => {
           <Route path="/Reservation" element={<Reservation />} />
           <Route path="/FutureShowsPage" element={<FutureShowsPage />} />
           <Route path="/ReservationOverviewPage" element={<ReservationOverviewPage />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </ShoppingCartProvider>
@@ -30,3 +36,26 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Home from "./pages/Home";
+// import Login from "./components/Login";
+// import Dashboard from "./components/Dashboard";
+// import PrivateRoute from "./components/PrivateRoute";
+
+// function App() {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route element={<PrivateRoute />}>
+//           <Route path="/dashboard" element={<Dashboard />} />
+//         </Route>
+//       </Routes>
+//     </Router>
+//   );
+// }
+
+// export default App;

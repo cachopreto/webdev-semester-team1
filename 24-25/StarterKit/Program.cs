@@ -15,12 +15,16 @@ namespace StarterKit
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
+                    // policy => policy
                     policy => policy
-                        .AllowAnyOrigin()   // Allows any origin to make requests
+                        .WithOrigins("http://localhost:8080")
+                        // .AllowAnyOrigin()   // Allows any origin to make requests
                         .AllowAnyMethod()   // Allows any HTTP method (GET, POST, etc.)
-                        .AllowAnyHeader()); // Allows any headers
+                        .AllowAnyHeader() // Allows any headers
+                        .AllowCredentials());
             });
 
+            builder.Services.AddControllers();
             builder.Services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
@@ -29,16 +33,19 @@ namespace StarterKit
                 });
 
             builder.Services.AddDistributedMemoryCache();
-
             builder.Services.AddSession(options => 
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.HttpOnly = true; 
                 options.Cookie.IsEssential = true; 
+                options.Cookie.SameSite = SameSiteMode.Lax;
+
             });
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<TheatreShowService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<LoginService>();
             builder.Services.AddScoped<IReservationService, ReservationService>(); // Register your reservation service
 
             builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -60,7 +67,7 @@ namespace StarterKit
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
 

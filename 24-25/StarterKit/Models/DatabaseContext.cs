@@ -6,11 +6,15 @@ namespace StarterKit.Models
     public class DatabaseContext : DbContext
     {
         // The admin table will be used in both cases
-        public DbSet<Admin> Admin { get; set; }
 
         // You can comment out or remove the case you are not going to use.
 
         // Tables for the Theatre ticket case
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        {
+
+        }
+        public DbSet<Admin> Admins { get; set; }
 
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
@@ -27,10 +31,7 @@ namespace StarterKit.Models
 
 
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-        {
 
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
