@@ -1,0 +1,21 @@
+POST http://localhost:5097/api/Admin/login
+Content-Type: application/json
+
+{
+  "username": "www",
+  "password": "www"
+}
+
+
+### Login Request
+POST http://localhost:5097/api/admin/login
+Content-Type: application/json
+
+{
+    "username": "extra_admin",
+    "password": "extra_password123"
+}
+
+### Test Get Admin List
+GET http://localhost:5097/api/admin
+Authorization: Bearer {{token}}
