@@ -114,7 +114,7 @@ export const fetchVenues = (): Promise<any[]> => {
 // services/reservationService.ts
 
 export const createReservation = async (reservationData: ReservationRequest) => {
-  const response = await fetch('http://localhost:5000/api/v1/reservations', {
+  const response = await fetch('http://localhost:5097/api/v1/reservations', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -129,4 +129,3 @@ export const createReservation = async (reservationData: ReservationRequest) => 
 
   return await response.json(); // Return JSON response if reservation is successful
 };
-

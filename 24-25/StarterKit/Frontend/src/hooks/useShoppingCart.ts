@@ -54,12 +54,12 @@ export const useShoppingCart = () => {
 
   // Calculates total number of tickets in cart
   const getTotalItems = () => {
-    return cart.items.reduce((total, item) => total + item.amountOfTickets, 0);
+    return cart.items.reduce((total, item) => total + item.AmountOfTickets, 0);
   };
 
   // Calculates total price of all items in cart
   const getTotalPrice = () => {
-    return cart.items.reduce((total, item) => total + (item.price || 0) * item.amountOfTickets, 0);
+    return cart.items.reduce((total, item) => total + (item.price || 0) * item.AmountOfTickets, 0);
   };
 
   return {

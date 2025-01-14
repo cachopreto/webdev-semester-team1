@@ -2,8 +2,8 @@ export interface ReservationRequest {
   firstName: string;
   lastName: string;
   email: string;
-  theatreShowDateId: number;
-  amountOfTickets: number;
+  TheatreShowDateId: number;
+  AmountOfTickets: number;
 }
 
 export interface CartItem extends ReservationRequest {

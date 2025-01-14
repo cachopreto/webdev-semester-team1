@@ -24,8 +24,8 @@ export const ShoppingCart: React.FC = () => {
             firstName: item.firstName,
             lastName: item.lastName,
             email: item.email,
-            theatreShowDateId: item.theatreShowDateId,
-            amountOfTickets: item.amountOfTickets,
+            TheatreShowDateId: item.TheatreShowDateId,
+            AmountOfTickets: item.AmountOfTickets,
           }).catch(err => {
             // Handle individual reservation failures
             throw new Error(`Failed to reserve ${item.showTitle}: ${err.message}`);
@@ -63,8 +63,8 @@ export const ShoppingCart: React.FC = () => {
             <div className="cart-item-title">{item.showTitle}</div>
             <div className="cart-item-details">
               Date: {item.showDate}<br />
-              Tickets: {item.amountOfTickets}<br />
-              Price: €{(item.price || 0) * item.amountOfTickets}
+              Tickets: {item.AmountOfTickets}<br />
+              Price: €{(item.price || 0) * item.AmountOfTickets}
             </div>
           </div>
           <button
