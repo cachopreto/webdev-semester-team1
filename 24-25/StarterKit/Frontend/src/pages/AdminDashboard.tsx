@@ -15,10 +15,16 @@ const AdminDashboard: React.FC = () => {
           <Link to="/CreateTheatreShowPage">Create New Theatre Show</Link>
         </li>
         <li>
-          <Link to="/ShowOverviewPage">zamir code</Link>
+          <Link to="/ShowOverviewPage">zamir code (Search show)</Link>
         </li>
         <li>
-          <Link to="/Reservation">ammar code</Link>
+          <Link to="/Reservation">Make reservation</Link>
+        </li>
+        <li>
+          <Link to="/FutureShowsPage">Check upcoming shows</Link>
+        </li>
+        <li>
+          <Link to="/ReservationOverviewPage">Check all reservations</Link>
         </li>
       </ul>
     </div>

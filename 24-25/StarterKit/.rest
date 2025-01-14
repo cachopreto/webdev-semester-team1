@@ -94,3 +94,7 @@ GET http://localhost:5097/api/v1/theatreShow?startDate=2024-12-01&endDate=2024-1
 // price (descending)
 GET http://localhost:5097/api/v1/theatreShow?sortBy=price&ascending=false
 #####
+
+### Fetch All reservations
+GET http://localhost:5097/api/v1/reservations HTTP/1.1
+//Content-Type: application/json

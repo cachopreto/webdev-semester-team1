@@ -35,5 +35,15 @@ namespace StarterKit.Services
                            .Where(r => r.TheatreShowDate != null && r.TheatreShowDate.TheatreShowDateId == theatreShowDateId)
                            .Sum(r => r.AmountOfTickets);
         }
+
+        public IEnumerable<Reservation> GetReservations()
+        {
+            return _context.Reservation
+                .Include(r => r.Customer) 
+                .Include(r => r.TheatreShowDate) 
+                    .ThenInclude(tsd => tsd.TheatreShow) 
+                    .ThenInclude(ts => ts.Venue);
+        }
+
     }
 }

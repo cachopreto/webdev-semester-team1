@@ -26,6 +26,12 @@ public class ReservationController : ControllerBase
         _context = context;
     }
 
+    [HttpGet]
+    public IActionResult GetReservations()
+    {
+        return Ok(_reservationService.GetReservations());
+    }
+
     // Endpoint to get the show date details by ID
     [HttpGet("showdate/{id}")]
     public IActionResult GetShowDate(int id)

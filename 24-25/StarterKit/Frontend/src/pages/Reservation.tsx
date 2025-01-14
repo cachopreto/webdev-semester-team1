@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { ReservationForm } from '../components/ReservationForm';
 import { ShoppingCart } from '../components/ShoppingCart';
 import { getTheatreShows } from '../services/TheatreShowService';
+import { Link } from "react-router-dom";
 import '../styles/reservation.css';
 
 interface Venue {
@@ -86,7 +87,13 @@ export const ReservationPage: React.FC = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error}
+          <ul>
+            <li>
+              <Link to="/">Go back to admin dashboard</Link>
+            </li>
+          </ul>
+          </div>;
   }
 
   if (!showsData.length) {
@@ -133,6 +140,11 @@ export const ReservationPage: React.FC = () => {
             <div className="cart-section">
               <ShoppingCart />
             </div>
+            <ul>
+        <li>
+          <Link to="/">Go back</Link>
+        </li>
+      </ul>
           </div>
         </div>
       ))}

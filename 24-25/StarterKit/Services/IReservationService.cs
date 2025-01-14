@@ -8,5 +8,6 @@ namespace StarterKit.Services
         TheatreShowDate? GetTheatreShowDateById(int theatreShowDateId);
         void CreateReservation(Reservation reservation);
         int GetTotalReservedTicketsForShowDate(int theatreShowDateId);
+        IEnumerable<Reservation> GetReservations();
     }
 }

@@ -22,6 +22,7 @@ interface TheatreShow {
 const TheatreShowsOverview: React.FC = () => {
   const [shows, setShows] = useState<TheatreShow[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchShows = async () => {
@@ -30,6 +31,8 @@ const TheatreShowsOverview: React.FC = () => {
         setShows(data);
       } catch (err) {
         setError("Failed to fetch theatre shows");
+      } finally {
+        setIsLoading(false); // Stop loading once the fetch is done
       }
     };
 
@@ -40,8 +43,12 @@ const TheatreShowsOverview: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (shows.length === 0) {
+  if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (shows.length === 0) {
+    return <div>No theatre show in the system</div>;
   }
 
   return (

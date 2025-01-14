@@ -129,3 +129,17 @@ export const createReservation = async (reservationData: ReservationRequest) => 
 
   return await response.json(); // Return JSON response if reservation is successful
 };
+
+export const getReservations = () => {
+  return fetch("http://localhost:5097/api/v1/reservations")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch reservations");
+      }
+      return response.json(); // Parse the JSON if the response is successful
+    })
+    .catch((error) => {
+      console.error(error); // Catch any errors from the fetch or response processing
+      throw error; // Re-throw the error to handle it outside this function
+    });
+};

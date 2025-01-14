@@ -7,6 +7,8 @@ import CreateTheatreShowPage from "./pages/CreateTheatreShowPage";
 import EditTheatreShowPage from "./pages/EditTheatreShowPage";
 import ShowOverview from "./pages/ShowsOverviewPage";
 import Reservation from "./pages/Reservation";
+import FutureShowsPage from "./pages/FutureShowsPage";
+import ReservationOverviewPage from "./pages/ReservationOverviewPage";
 
 const App: React.FC = () => {
   return (
@@ -19,6 +21,8 @@ const App: React.FC = () => {
           <Route path="/EditTheatreShowPage/:id" element={<EditTheatreShowPage />} />
           <Route path="/ShowOverviewPage" element={<ShowOverview />} />
           <Route path="/Reservation" element={<Reservation />} />
+          <Route path="/FutureShowsPage" element={<FutureShowsPage />} />
+          <Route path="/ReservationOverviewPage" element={<ReservationOverviewPage />} />
         </Routes>
       </Router>
     </ShoppingCartProvider>
