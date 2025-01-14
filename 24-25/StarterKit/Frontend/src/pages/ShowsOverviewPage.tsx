@@ -1,15 +1,19 @@
+// src/pages/ShowsOverviewPage.tsx
+
 import React from 'react';
 import ShowsOverview from '../components/ShowsOverview';
+import "../styles/login.css"; 
 import { Link } from "react-router-dom";
+
 
 const ShowsOverviewPage = () => {
   return (
-    <div>
+    <div className="home-container">
       <h1>Shows Overview</h1>
       <ShowsOverview />
-      <ul>
+      <ul style={{ marginTop: "20px" }}>
         <li>
-          <Link to="/">Go back to admin dashboard</Link>
+          <Link to="/">Go back</Link>
         </li>
       </ul>
     </div>
@@ -17,4 +21,3 @@ const ShowsOverviewPage = () => {
 };
 
 export default ShowsOverviewPage;
-

@@ -82,9 +82,18 @@ export const deleteTheatreShow = (id: number): Promise<string> => {
 };
 
 
-export const fetchShows = (filters: Record<string, string | undefined>): Promise<any[]> => {
+// src/services/TheatreShowService.ts
+
+export const fetchShows = (filters: {
+  titleOrDescription?: string;
+  location?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: string;
+  ascending?: boolean;
+}): Promise<any[]> => {
   const queryParams = new URLSearchParams(filters as Record<string, string>).toString(); // Build query string
-  return fetch(`http://localhost:5097/api/shows?${queryParams}`)
+  return fetch(`http://localhost:5097/api/v1/theatreShow?${queryParams}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to fetch shows");
@@ -98,7 +107,7 @@ export const fetchShows = (filters: Record<string, string | undefined>): Promise
 };
 
 export const fetchVenues = (): Promise<any[]> => {
-  return fetch("http://localhost:5097/api/venues")
+  return fetch("http://localhost:5097/api/v1/venues")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to fetch venues");
@@ -110,6 +119,7 @@ export const fetchVenues = (): Promise<any[]> => {
       return []; // Return an empty array in case of error
     });
 };
+
 
 // services/reservationService.ts
 

@@ -1,6 +1,7 @@
 import React from "react";
 import EditTheatreShowForm from "../components/EditTheatreShowForm";
 import { Link, useParams } from "react-router-dom";
+import "../styles/login.css"; 
 
 const EditTheatreShowPage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Extract `id` from URL parameters
@@ -16,8 +17,7 @@ const EditTheatreShowPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Edit Theatre Show</h1>
+    <div className="home-container">
       {/* Render the edit form with the valid ID */}
       <EditTheatreShowForm id={numericId} />
       {/* Provide a link to go back to the Theatre Show Overview page */}

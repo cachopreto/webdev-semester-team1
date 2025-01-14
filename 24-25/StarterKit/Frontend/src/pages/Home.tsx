@@ -16,7 +16,13 @@ const Home = () => {
         </Link>
         <Link to="/Reservation" className="btn btn-primary">
         Make reservation</Link>
-        <Link to="/FutureShowsPage"className="btn btn-primary">Check upcoming shows</Link>
+        <Link to="/FutureShowsPage"className="btn btn-primary">
+        Check upcoming shows</Link>
+        <Link to="/ShowOverviewPage"className="btn btn-primary">
+        Search show</Link>
+        <Link to="/Admindashboard"className="btn btn-primary">
+        Go to admin</Link>
+                
         
       </div>
     </div>

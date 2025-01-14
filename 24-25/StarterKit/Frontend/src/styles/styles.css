@@ -1,0 +1,63 @@
+/* Basic Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light background */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container to center the content */
+  .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  /* Filters Section */
+  .filters-section {
+    margin-bottom: 20px;
+  }
+  
+  .filters-section label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .filters-section input,
+  .filters-section select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Show Cards Section */
+  .shows-list {
+    margin-top: 20px;
+  }
+  
+  .show-card {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .show-card h2 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .show-card p {
+    margin: 5px 0;
+  }
+  
+  /* Empty State Message */
+  .no-shows-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #888;
+  }
+  

@@ -33,8 +33,10 @@ body {
 }
 
 .home-content {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 1rem; 
 }
 
 .home-content p {
@@ -130,6 +132,9 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s;
+  width: 100%; 
+  max-width: 300px; 
+  text-align: center; 
 }
 
 .btn-primary {
