@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TheatreShowsOverview from "../components/TheatreShowsOverview";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteTheatreShow from "../components/DeleteTheatreShow";
+import "../styles/login.css"; 
 
 const TheatreShowOverviewPage: React.FC = () => {
   const [showId, setShowId] = useState<string>(""); // ID input by the user
@@ -15,7 +16,7 @@ const TheatreShowOverviewPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="home-container">
       <h1>Theatre Show Overview</h1>
       <TheatreShowsOverview /> {/* Render the table of theatre shows */}
 
@@ -38,7 +39,7 @@ const TheatreShowOverviewPage: React.FC = () => {
 
       <ul style={{ marginTop: "20px" }}>
         <li>
-          <Link to="/">Go back to admin dashboard</Link>
+          <Link to="/Admindashboard">Go back to admin dashboard</Link>
         </li>
       </ul>
     </div>

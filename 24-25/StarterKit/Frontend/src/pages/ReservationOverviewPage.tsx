@@ -2,17 +2,17 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ReservationOverview from "../components/ReservationOverview";
 import { Link } from "react-router-dom";
+import '../styles/reservation.css';
 
 const ReservationPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1>Reservation Overview</h1>
+    <div className="home-container">
       <ReservationOverview />
       <ul>
         <li>
-          <Link to="/">Go back to admin dashboard</Link>
+          <Link to="/AdminDashboard">Go back to admin dashboard</Link>
         </li>
       </ul>
     </div>

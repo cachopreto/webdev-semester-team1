@@ -1,138 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { fetchShows, fetchVenues } from '../services/TheatreShowService';
+import { useState } from "react";
+import '../styles/styles.css';
 
-// Define types for shows and venues
-interface Show {
-  id: number;
+// Define the interface for TheatreShow
+interface TheatreShow {
+  theatreShowId: number;
   title: string;
   description: string;
-  date: string;
   price: number;
+  venue: {
+    name: string;
+  };
+  theatreShowDates: Array<{
+    dateAndTime: string;
+  }>;
 }
 
-interface Venue {
-  id: number;
-  name: string;
+// Define the filters interface
+interface Filters {
+  titleOrDescription?: string;
+  location?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: string;
+  ascending?: boolean;
 }
 
-const ShowsOverview = () => {
-  const [shows, setShows] = useState<Show[]>([]); // Explicitly type as Show[]
-  const [venues, setVenues] = useState<Venue[]>([]); // Explicitly type as Venue[]
-  const [filters, setFilters] = useState({
-    search: '',
-    venue: '',
-    month: '',
-    orderBy: '',
+// Import the fetchShows service function
+import { fetchShows } from "../services/TheatreShowService"; // Replace with the correct path
+
+const ShowsList = () => {
+  const [shows, setShows] = useState<TheatreShow[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    titleOrDescription: "",
+    location: "",
+    startDate: "",
+    endDate: "",
+    sortBy: "title",
+    ascending: true,
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    const loadVenues = async () => {
-      const venuesData: Venue[] = await fetchVenues(); // Add type assertion
-      setVenues(venuesData);
-    };
-
-    const loadShows = async () => {
-      const showsData: Show[] = await fetchShows(filters); // Add type assertion
-      setShows(showsData);
-    };
-
-    loadVenues();
-    loadShows();
-  }, [filters]);
-
-  useEffect(() => {
-    const params = Object.fromEntries([...searchParams]);
-    setFilters((prev) => ({ ...prev, ...params }));
-  }, [searchParams]);
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-    setSearchParams((prev) => ({ ...Object.fromEntries([...prev]), [name]: value }));
+  // Handle the search and fetching of shows based on filters
+  const handleSearch = async () => {
+    try {
+      const fetchedShows = await fetchShows(filters); // Use fetchShows with filters
+      setShows(fetchedShows); // Set fetched shows in state
+    } catch (error) {
+      console.error("Failed to fetch shows:", error);
+    }
   };
 
   return (
-    <div>
+    <div className="search-container">
+      <h2>Search Shows</h2>
+      
+      {/* Search by title/description */}
       <div>
-        <div>
-          <label htmlFor="search">Search by title or description</label>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            value={filters.search}
-            onChange={handleFilterChange}
-            placeholder="Search..."
-          />
-        </div>
-
-        <div>
-          <label htmlFor="venue">Select a Venue</label>
-          <select
-            id="venue"
-            name="venue"
-            value={filters.venue}
-            onChange={handleFilterChange}
-            aria-label="Select a venue"
-          >
-            <option value="">All Venues</option>
-            {venues.map((venue) => (
-              <option key={venue.id} value={venue.name}>
-                {venue.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="month">Select a Month</label>
-          <input
-            type="text"
-            id="month"
-            name="month"
-            value={filters.month}
-            onChange={handleFilterChange}
-            placeholder="YYYY-MM"
-            pattern="\d{4}-\d{2}"
-            title="Enter month in YYYY-MM format"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="orderBy">Order By</label>
-          <select
-            id="orderBy"
-            name="orderBy"
-            value={filters.orderBy}
-            onChange={handleFilterChange}
-            aria-label="Order by options"
-          >
-            <option value="">Default Order</option>
-            <option value="title-asc">Title A-Z</option>
-            <option value="title-desc">Title Z-A</option>
-            <option value="price-asc">Price Low to High</option>
-            <option value="price-desc">Price High to Low</option>
-            <option value="date-asc">Date Ascending</option>
-            <option value="date-desc">Date Descending</option>
-          </select>
-        </div>
+        <label htmlFor="titleOrDescription">Search by title or description:</label>
+        <input
+          id="titleOrDescription"
+          type="text"
+          placeholder="Enter title or description"
+          value={filters.titleOrDescription}
+          onChange={(e) => setFilters({ ...filters, titleOrDescription: e.target.value })}
+        />
       </div>
 
-      <ul>
-        {shows.map((show) => (
-          <li key={show.id}>
-            <h2>{show.title}</h2>
-            <p>{show.description}</p>
-            <p>{show.date}</p>
-            <p>{show.price}</p>
-          </li>
-        ))}
-      </ul>
+      {/* Filter by venue */}
+      <div>
+        <label htmlFor="location">Search by venue:</label>
+        <input
+          id="location"
+          type="text"
+          placeholder="Enter venue name"
+          value={filters.location}
+          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+        />
+      </div>
+
+      {/* Date range filter */}
+      <div>
+        <label htmlFor="startDate">Start Date:</label>
+        <input
+          id="startDate"
+          type="date"
+          value={filters.startDate}
+          onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
+        />
+      </div>
+      <div>
+        <label htmlFor="endDate">End Date:</label>
+        <input
+          id="endDate"
+          type="date"
+          value={filters.endDate}
+          onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+        />
+      </div>
+
+      {/* Sort by dropdown */}
+      <div>
+        <label htmlFor="sortBy">Sort by:</label>
+        <select
+          id="sortBy"
+          value={filters.sortBy}
+          onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+        >
+          <option value="title">Title</option>
+          <option value="price">Price</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+
+      {/* Ascending/Descending */}
+      <div>
+        <label htmlFor="ascending">Ascending</label>
+        <input
+          id="ascending"
+          type="checkbox"
+          checked={filters.ascending}
+          onChange={(e) => setFilters({ ...filters, ascending: e.target.checked })}
+        />
+      </div>
+
+      <button onClick={handleSearch}>Search</button>
+
+      {/* Displaying the search results */}
+      <div className="shows-container">
+        {shows.length > 0 ? (
+          shows.map((show) => (
+            <div className="show-card" key={show.theatreShowId}>
+              <h3>{show.title}</h3>
+              <p>{show.description}</p>
+              <p><strong>Venue:</strong> {show.venue?.name}</p>
+              <p><strong>Price:</strong> ${show.price}</p>
+              {show.theatreShowDates && show.theatreShowDates.length > 0 && (
+                <p><strong>First Show Date:</strong> {new Date(show.theatreShowDates[0].dateAndTime).toLocaleString()}</p>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No shows found</p>
+        )}
+      </div>
     </div>
   );
 };
 
-export default ShowsOverview;
+export default ShowsList;

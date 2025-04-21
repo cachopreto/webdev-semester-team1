@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTheatreShows } from "../services/TheatreShowService";
 import { Link } from "react-router-dom";
+import "../styles/login.css"; 
 
 interface TheatreShowDate {
   dateAndTime: string;
@@ -63,7 +64,7 @@ const FutureShowsPage: React.FC = () => {
         <h2>No upcoming theatre shows currently available.</h2>
         <ul>
           <li>
-            <Link to="/">Go back to admin dashboard</Link>
+            <Link to="/">Go back</Link>
           </li>
         </ul>
       </div>
@@ -71,7 +72,7 @@ const FutureShowsPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="home-container">
       <h1>Upcoming Theatre Shows</h1>
       <table border={1}>
         <thead>
@@ -108,7 +109,7 @@ const FutureShowsPage: React.FC = () => {
       </table>
       <ul style={{ marginTop: "20px" }}>
         <li>
-          <Link to="/">Go back to admin dashboard</Link>
+          <Link to="/">Go back</Link>
         </li>
       </ul>
     </div>
